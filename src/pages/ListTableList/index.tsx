@@ -1,5 +1,5 @@
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Divider, Dropdown, Menu, message, Input } from 'antd';
+import { Button, Divider, Dropdown, Menu, message, Input, Avatar } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -78,8 +78,9 @@ const TableList: React.FC<{}> = () => {
   const actionRef = useRef<ActionType>();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '规则名称',
+      title: '账号名',
       dataIndex: 'name',
+      align: 'left',
       rules: [
         {
           required: true,
@@ -88,30 +89,54 @@ const TableList: React.FC<{}> = () => {
       ],
     },
     {
-      title: '描述',
+      title: '头像',
+      dataIndex: 'avatar',
+      align: 'center',
+      render: (_, record) => <Avatar src={record.avatar} shape="square" size="large" />,
+    },
+    {
+      title: '昵称',
       dataIndex: 'desc',
+      align: 'center',
       valueType: 'textarea',
     },
     {
-      title: '服务调用次数',
+      title: '账户余额',
       dataIndex: 'callNo',
+      align: 'center',
       sorter: true,
       hideInForm: true,
-      renderText: (val: string) => `${val} 万`,
+      renderText: (val: string) => `${val} 元`,
+    },
+    {
+      title: '手机',
+      dataIndex: 'phone',
+      align: 'center',
+    },
+    {
+      title: '电子邮箱',
+      dataIndex: 'email',
+      align: 'center',
+      hideInForm: true,
+    },
+    {
+      title: 'QQ',
+      dataIndex: 'qq',
+      align: 'center',
     },
     {
       title: '状态',
       dataIndex: 'status',
+      align: 'center',
       hideInForm: true,
       valueEnum: {
-        0: { text: '关闭', status: 'Default' },
-        1: { text: '运行中', status: 'Processing' },
-        2: { text: '已上线', status: 'Success' },
-        3: { text: '异常', status: 'Error' },
+        0: { text: '已删除', status: 'Default' },
+        1: { text: '正常', status: 'Success' },
+        2: { text: '已禁用', status: 'Error' },
       },
     },
     {
-      title: '上次调度时间',
+      title: '上次登录时间',
       dataIndex: 'updatedAt',
       sorter: true,
       valueType: 'dateTime',
@@ -130,6 +155,7 @@ const TableList: React.FC<{}> = () => {
     {
       title: '操作',
       dataIndex: 'option',
+      align: 'center',
       valueType: 'option',
       render: (_, record) => (
         <>
@@ -139,10 +165,10 @@ const TableList: React.FC<{}> = () => {
               setStepFormValues(record);
             }}
           >
-            配置
+            编辑
           </a>
           <Divider type="vertical" />
-          <a href="">订阅警报</a>
+          <a href="">资金调整</a>
         </>
       ),
     },
@@ -151,12 +177,12 @@ const TableList: React.FC<{}> = () => {
   return (
     <PageHeaderWrapper>
       <ProTable<TableListItem>
-        headerTitle="查询表格"
+        headerTitle="会员列表"
         actionRef={actionRef}
         rowKey="key"
         toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
+            <PlusOutlined /> 添加
           </Button>,
           selectedRows && selectedRows.length > 0 && (
             <Dropdown
@@ -171,7 +197,8 @@ const TableList: React.FC<{}> = () => {
                   selectedKeys={[]}
                 >
                   <Menu.Item key="remove">批量删除</Menu.Item>
-                  <Menu.Item key="approval">批量审批</Menu.Item>
+                  <Menu.Item key="approval">批量禁用</Menu.Item>
+                  <Menu.Item key="approval">批量启用</Menu.Item>
                 </Menu>
               }
             >
@@ -185,7 +212,11 @@ const TableList: React.FC<{}> = () => {
           <div>
             已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
             <span>
-              服务调用次数总计 {selectedRows.reduce((pre, item) => pre + item.callNo, 0)} 万
+              账户总余额{' '}
+              <a style={{ fontWeight: 600 }}>
+                {selectedRows.reduce((pre, item) => pre + item.callNo, 0)}
+              </a>{' '}
+              元
             </span>
           </div>
         )}

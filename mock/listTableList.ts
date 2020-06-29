@@ -18,10 +18,13 @@ const genList = (current: number, pageSize: number) => {
         'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png',
       ][i % 2],
       name: `TradeCode ${index}`,
+      phone: '13122223333',
+      qq: '10086',
+      email: '10086@qq.com',
       owner: '曲丽丽',
       desc: '这是一段描述',
       callNo: Math.floor(Math.random() * 1000),
-      status: Math.floor(Math.random() * 10) % 4,
+      status: Math.floor(Math.random() * 10) % 3,
       updatedAt: new Date(),
       createdAt: new Date(),
       progress: Math.ceil(Math.random() * 100),
@@ -107,7 +110,7 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
   }
 
   const body = (b && b.body) || req.body;
-  const { method, name, desc, key } = body;
+  const { method, name, desc, key, email, qq, phone } = body;
 
   switch (method) {
     /* eslint no-case-declarations:0 */
@@ -126,6 +129,9 @@ function postRule(req: Request, res: Response, u: string, b: Request) {
           ][i % 2],
           name,
           owner: '曲丽丽',
+          phone,
+          qq,
+          email,
           desc,
           callNo: Math.floor(Math.random() * 1000),
           status: Math.floor(Math.random() * 10) % 2,

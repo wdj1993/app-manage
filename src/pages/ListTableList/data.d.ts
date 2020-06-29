@@ -6,6 +6,9 @@ export interface TableListItem {
   name: string;
   owner: string;
   desc: string;
+  phone: string;
+  qq: string;
+  email: string;
   callNo: number;
   status: number;
   updatedAt: Date;
@@ -28,6 +31,9 @@ export interface TableListParams {
   status?: string;
   name?: string;
   desc?: string;
+  phone?: string;
+  qq?: string;
+  email?: string;
   key?: number;
   pageSize?: number;
   currentPage?: number;
